@@ -67,6 +67,7 @@ func main() {
 			return utils.NewBufferedWriteCloser(bufio.NewWriter(f), f)
 		})
 	}
+	qconf.Cookies = []byte{255, 255, 255, 255, 255}
 	roundTripper := &http3.RoundTripper{
 		TLSClientConfig: &tls.Config{
 			RootCAs:            pool,
@@ -79,6 +80,7 @@ func main() {
 	hclient := &http.Client{
 		Transport: roundTripper,
 	}
+	logger.Infof("client cookies", qconf.Cookies)
 
 	var wg sync.WaitGroup
 	wg.Add(len(urls))

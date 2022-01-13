@@ -227,6 +227,9 @@ type Config struct {
 	// If used for a server, or dialing on a packet conn, a 4 byte connection ID will be used.
 	// When dialing on a packet conn, the ConnectionIDLength value must be the same for every Dial call.
 	ConnectionIDLength int
+	// Transport-layer cookies
+	// Snatch only
+	Cookies []byte
 	// HandshakeIdleTimeout is the idle timeout before completion of the handshake.
 	// Specifically, if we don't receive any packet from the peer within this time, the connection attempt is aborted.
 	// If this value is zero, the timeout is set to 5 seconds.

@@ -99,6 +99,7 @@ func populateConfig(config *Config) *Config {
 	} else if maxIncomingUniStreams < 0 {
 		maxIncomingUniStreams = 0
 	}
+	cookies := config.Cookies
 
 	return &Config{
 		Versions:                         versions,
@@ -119,5 +120,6 @@ func populateConfig(config *Config) *Config {
 		DisablePathMTUDiscovery:          config.DisablePathMTUDiscovery,
 		DisableVersionNegotiationPackets: config.DisableVersionNegotiationPackets,
 		Tracer:                           config.Tracer,
+		Cookies:                          cookies,
 	}
 }

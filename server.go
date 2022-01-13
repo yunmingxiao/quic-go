@@ -447,7 +447,7 @@ func (s *baseServer) handleInitialImpl(p *receivedPacket, hdr *wire.Header) erro
 		return nil
 	}
 
-	connID, err := protocol.GenerateConnectionID(s.config.ConnectionIDLength)
+	connID, err := protocol.GenerateConnectionID(s.config.ConnectionIDLength, nil)
 	if err != nil {
 		return err
 	}
@@ -532,7 +532,7 @@ func (s *baseServer) sendRetry(remoteAddr net.Addr, hdr *wire.Header, info *pack
 	// Log the Initial packet now.
 	// If no Retry is sent, the packet will be logged by the session.
 	(&wire.ExtendedHeader{Header: *hdr}).Log(s.logger)
-	srcConnID, err := protocol.GenerateConnectionID(s.config.ConnectionIDLength)
+	srcConnID, err := protocol.GenerateConnectionID(s.config.ConnectionIDLength, nil)
 	if err != nil {
 		return err
 	}

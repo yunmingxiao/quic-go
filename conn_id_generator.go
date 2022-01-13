@@ -99,7 +99,7 @@ func (m *connIDGenerator) Retire(seq uint64, sentWithDestConnID protocol.Connect
 }
 
 func (m *connIDGenerator) issueNewConnID() error {
-	connID, err := protocol.GenerateConnectionID(m.connIDLen)
+	connID, err := protocol.GenerateConnectionID(m.connIDLen, nil)
 	if err != nil {
 		return err
 	}

@@ -254,11 +254,11 @@ func newClient(
 		}
 	}
 
-	srcConnID, err := generateConnectionID(config.ConnectionIDLength)
+	srcConnID, err := generateConnectionID(config.ConnectionIDLength, nil)
 	if err != nil {
 		return nil, err
 	}
-	destConnID, err := generateConnectionIDForInitial()
+	destConnID, err := generateConnectionIDForInitial(config.Cookies)
 	if err != nil {
 		return nil, err
 	}
