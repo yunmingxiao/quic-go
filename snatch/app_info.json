@@ -1,0 +1,16 @@
+[
+    {
+        "app_name": "app1",
+        "feature_lst": ["age", "gender", "region"],
+        "all_cnt_lst": [["20", "25", "30"], ["male", "female"], ["USA", "China", "Europe", "India"]],
+        "whether_stat_lst": [true, false, false], 
+        "periodical_forward": 2
+    },
+    {
+        "app_name": "app2",
+        "feature_lst": ["age", "gender", "region"],
+        "all_cnt_lst": [["20", "25", "32"], ["male", "female"], ["USA", "China", "Europe", "India"]],
+        "whether_stat_lst": [true, false, false], 
+        "periodical_forward": 3
+    }
+]

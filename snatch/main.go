@@ -7,7 +7,6 @@ import (
 	"flag"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"log"
 	"mime/multipart"
 	"net/http"
@@ -71,33 +70,12 @@ func setupHandler(www string) http.Handler {
 		})
 	}
 
-	mux.HandleFunc("/demo/tile", func(w http.ResponseWriter, r *http.Request) {
-		// Small 40x40 png
-		w.Write([]byte{
-			0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, 0x00, 0x00, 0x00, 0x0d,
-			0x49, 0x48, 0x44, 0x52, 0x00, 0x00, 0x00, 0x28, 0x00, 0x00, 0x00, 0x28,
-			0x01, 0x03, 0x00, 0x00, 0x00, 0xb6, 0x30, 0x2a, 0x2e, 0x00, 0x00, 0x00,
-			0x03, 0x50, 0x4c, 0x54, 0x45, 0x5a, 0xc3, 0x5a, 0xad, 0x38, 0xaa, 0xdb,
-			0x00, 0x00, 0x00, 0x0b, 0x49, 0x44, 0x41, 0x54, 0x78, 0x01, 0x63, 0x18,
-			0x61, 0x00, 0x00, 0x00, 0xf0, 0x00, 0x01, 0xe2, 0xb8, 0x75, 0x22, 0x00,
-			0x00, 0x00, 0x00, 0x49, 0x45, 0x4e, 0x44, 0xae, 0x42, 0x60, 0x82,
-		})
-	})
+	mux.HandleFunc("/app1", func(w http.ResponseWriter, r *http.Request) {
+		// cookie, _ := r.Cookie("appointment")
+		fmt.Println("accessed /demo/tile")
+		fmt.Println("cookies", r.Cookies())
 
-	mux.HandleFunc("/demo/tiles", func(w http.ResponseWriter, r *http.Request) {
-		io.WriteString(w, "<html><head><style>img{width:40px;height:40px;}</style></head><body>")
-		for i := 0; i < 200; i++ {
-			fmt.Fprintf(w, `<img src="/demo/tile?cachebust=%d">`, i)
-		}
-		io.WriteString(w, "</body></html>")
-	})
-
-	mux.HandleFunc("/demo/echo", func(w http.ResponseWriter, r *http.Request) {
-		body, err := ioutil.ReadAll(r.Body)
-		if err != nil {
-			fmt.Printf("error reading body while handling /echo: %s\n", err.Error())
-		}
-		w.Write(body)
+		http.ServeFile(w, r, "html/index.html")
 	})
 
 	// accept file uploads and return the MD5 of the uploaded file
@@ -142,7 +120,7 @@ func main() {
 	verbose := flag.Bool("v", false, "verbose")
 	bs := binds{}
 	flag.Var(&bs, "bind", "bind to")
-	www := flag.String("www", "", "www data")
+	www := flag.String("www", "html", "www data")
 	tcp := flag.Bool("tcp", false, "also listen on TCP")
 	enableQlog := flag.Bool("qlog", false, "output a qlog (in the same directory)")
 	flag.Parse()
@@ -160,6 +138,7 @@ func main() {
 		bs = binds{"localhost:6121"}
 	}
 
+	fmt.Println("www", *www)
 	handler := setupHandler(*www)
 	quicConf := &quic.Config{}
 	if *enableQlog {
